@@ -1,5 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import CustomInput from "@components/CustomInput";
 
 type FormData = {
   email: string;
@@ -12,7 +13,7 @@ type Fields = {
   placeholder: string;
   autoCapitalize: "none" | "sentences" | "words" | "characters";
   autoFocus?: boolean;
-  secure: boolean;
+  secureTextEntry: boolean;
 };
 
 const fields: Fields[] = [
@@ -22,14 +23,14 @@ const fields: Fields[] = [
     placeholder: "Wpisz email",
     autoCapitalize: "none",
     autoFocus: true,
-    secure: false,
+    secureTextEntry: false,
   },
   {
     name: "password",
     label: "Hasło",
     placeholder: "Wpisz hasło",
     autoCapitalize: "none",
-    secure: true,
+    secureTextEntry: true,
   },
 ];
 
@@ -47,33 +48,46 @@ export default function LoginForm() {
 
   return (
     <View className="gap-4 w-full p-16">
-      {fields.map((field) => (
-        <View key={field.name} className="mb-4">
-          <Text className="text-sm font-medium text-gray-700 mb-1">
-            {field.label}
-          </Text>
-
-          <Controller
-            control={control}
-            name={field.name}
-            defaultValue=""
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                className="border border-gray-300 rounded-md w-full p-4"
-                placeholder={field.placeholder}
-                autoCapitalize={field.autoCapitalize}
-                autoFocus={field.autoFocus}
-                secureTextEntry={field.secure}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-          />
-        </View>
-      ))}
+      {fields.map(
+        ({
+          name,
+          label,
+          placeholder,
+          autoCapitalize,
+          autoFocus,
+          secureTextEntry,
+        }) => (
+          <View key={name}>
+            <Controller
+              control={control}
+              name={name}
+              defaultValue=""
+              rules={{
+                required: "To pole jest wymagane!",
+              }}
+              render={({
+                field: { onChange, value, onBlur },
+                fieldState: { error },
+              }) => (
+                <CustomInput
+                  label={label}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={placeholder}
+                  autoCapitalize={autoCapitalize}
+                  autoFocus={autoFocus}
+                  secureTextEntry={secureTextEntry}
+                  error={error}
+                />
+              )}
+            />
+          </View>
+        )
+      )}
 
       <Pressable
-        className="bg-blue-600 rounded-lg py-3 mt-4"
+        className="bg-blue-600 rounded-lg py-3"
         onPress={handleSubmit(onSubmit)}
       >
         <Text className="text-center text-white font-semibold">Zaloguj</Text>
