@@ -1,22 +1,21 @@
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import CustomInput from "@components/CustomInput";
+import type { TextInputProps } from "react-native";
 
 type FormData = {
   email: string;
   password: string;
 };
 
-type Fields = {
-  name: keyof FormData;
+type CustomInputProps = {
   label: string;
-  placeholder: string;
-  autoCapitalize: "none" | "sentences" | "words" | "characters";
-  autoFocus?: boolean;
-  secureTextEntry: boolean;
-};
+  error?: { message?: string };
+  rules: Record<string, any>;
+  name: keyof FormData;
+} & TextInputProps;
 
-const fields: Fields[] = [
+const fields: CustomInputProps[] = [
   {
     name: "email",
     label: "Email",
@@ -24,6 +23,13 @@ const fields: Fields[] = [
     autoCapitalize: "none",
     autoFocus: true,
     secureTextEntry: false,
+    rules: {
+      required: "To pole jest wymagane!",
+      pattern: {
+        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        message: "Wprowadź poprawny adres email!",
+      },
+    },
   },
   {
     name: "password",
@@ -31,10 +37,13 @@ const fields: Fields[] = [
     placeholder: "Wpisz hasło",
     autoCapitalize: "none",
     secureTextEntry: true,
+    rules: {
+      required: "To pole jest wymagane!",
+    },
   },
 ];
 
-export default function LoginForm() {
+export default function LoginForm({ onSignInPress }) {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       email: "",
@@ -42,8 +51,11 @@ export default function LoginForm() {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    console.log("✅ Logowanie:", data);
+  const onSubmit = async (data: FormData) => {
+    await onSignInPress({
+      emailAddress: data?.email,
+      password: data?.password,
+    });
   };
 
   return (
@@ -56,15 +68,14 @@ export default function LoginForm() {
           autoCapitalize,
           autoFocus,
           secureTextEntry,
+          rules,
         }) => (
           <View key={name}>
             <Controller
               control={control}
               name={name}
               defaultValue=""
-              rules={{
-                required: "To pole jest wymagane!",
-              }}
+              rules={rules}
               render={({
                 field: { onChange, value, onBlur },
                 fieldState: { error },
@@ -87,7 +98,7 @@ export default function LoginForm() {
       )}
 
       <Pressable
-        className="bg-blue-600 rounded-lg py-3"
+        className="bg-blue-600 rounded-lg py-3 mt-4"
         onPress={handleSubmit(onSubmit)}
       >
         <Text className="text-center text-white font-semibold">Zaloguj</Text>

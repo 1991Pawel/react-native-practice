@@ -11,6 +11,7 @@ const _Layout = () => {
           headerShown: false,
         }}
       />
+
       <Tabs.Screen
         name="dashboard"
         options={{
