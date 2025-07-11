@@ -13,6 +13,7 @@ export default function Page() {
       <Text className="m-auto text-2xl text-center bg-slate-500">
         Dashboard Hello {user?.emailAddresses[0].emailAddress}
       </Text>
+      <SignOutButton />
     </View>
   );
 }

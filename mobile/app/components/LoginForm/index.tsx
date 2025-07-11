@@ -1,35 +1,26 @@
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import CustomInput from "@components/CustomInput";
 import type { TextInputProps } from "react-native";
-
-type FormData = {
-  email: string;
-  password: string;
-};
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { LoginSchemaType, loginSchema } from "@/app/lib/shemas/loginSchema";
 
 type CustomInputProps = {
   label: string;
   error?: { message?: string };
-  rules: Record<string, any>;
-  name: keyof FormData;
+
+  name: keyof LoginSchemaType;
 } & TextInputProps;
 
 const fields: CustomInputProps[] = [
   {
-    name: "email",
+    name: "emailAddress",
     label: "Email",
     placeholder: "Wpisz email",
     autoCapitalize: "none",
     autoFocus: true,
     secureTextEntry: false,
-    rules: {
-      required: "To pole jest wymagane!",
-      pattern: {
-        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        message: "Wprowadź poprawny adres email!",
-      },
-    },
   },
   {
     name: "password",
@@ -37,23 +28,25 @@ const fields: CustomInputProps[] = [
     placeholder: "Wpisz hasło",
     autoCapitalize: "none",
     secureTextEntry: true,
-    rules: {
-      required: "To pole jest wymagane!",
-    },
   },
 ];
 
-export default function LoginForm({ onSignInPress }) {
-  const { control, handleSubmit } = useForm({
+type LoginFormProps = {
+  onSignInPress: (data: LoginSchemaType) => Promise<void>;
+};
+
+export default function LoginForm({ onSignInPress }: LoginFormProps) {
+  const { control, handleSubmit } = useForm<LoginSchemaType>({
     defaultValues: {
-      email: "",
+      emailAddress: "",
       password: "",
     },
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
     await onSignInPress({
-      emailAddress: data?.email,
+      emailAddress: data?.emailAddress,
       password: data?.password,
     });
   };
@@ -68,14 +61,12 @@ export default function LoginForm({ onSignInPress }) {
           autoCapitalize,
           autoFocus,
           secureTextEntry,
-          rules,
         }) => (
           <View key={name}>
             <Controller
               control={control}
               name={name}
               defaultValue=""
-              rules={rules}
               render={({
                 field: { onChange, value, onBlur },
                 fieldState: { error },

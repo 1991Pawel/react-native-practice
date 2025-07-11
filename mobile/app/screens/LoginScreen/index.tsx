@@ -1,38 +1,18 @@
 import LoginForm from "@/app/components/LoginForm";
 
-// import LoginForm from "@/app/components/LoginForm";
-// import { Text, View } from "react-native";
-// import { Link } from "expo-router";
-
-// export default function LoginScreen() {
-//   return (
-//     <View className="flex-1 items-center justify-center bg-white">
-//       <Text className="text-2xl text-center font-bold">LoginScreen</Text>
-//       <LoginForm />
-//       <Link href="/(auth)/register" className="text-blue-600 ">
-//         Register
-//       </Link>
-//       <Link href="/(protected)/dashboard" className="text-blue-600 ">
-//         dashboard
-//       </Link>
-//     </View>
-//   );
-// }
-
 import { useSignIn } from "@clerk/clerk-expo";
-import { Link, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import * as React from "react";
-import { Button, Text, TextInput, View } from "react-native";
+import { View } from "react-native";
+import { LoginSchemaType } from "@/app/lib/shemas/loginSchema";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
   const router = useRouter();
 
-  const [emailAddress, setEmailAddress] = React.useState("");
-  const [password, setPassword] = React.useState("");
-
   // Handle the submission of the sign-in form
-  const onSignInPress = async ({ emailAddress, password }) => {
+  const onSignInPress = async (data: LoginSchemaType) => {
+    const { emailAddress, password } = data;
     if (!isLoaded) return;
 
     // Start the sign-in process using the email and password provided
@@ -59,7 +39,7 @@ export default function Page() {
     }
   };
 
-  // 👇 Jeśli Clerk jeszcze się ładuje, nic nie pokazuj
+  // If Clerk is not loaded, we return null to avoid rendering the form
   if (!isLoaded) {
     return null;
   }
