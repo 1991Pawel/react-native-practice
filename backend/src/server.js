@@ -15,3 +15,10 @@ app.listen(PORT, () => {
 app.get("/", (req, res) => {
   res.send("Backend działa! 🚀");
 });
+app.get("register", (req, res) => {
+  // prisma.user.create({
+  //   data: {
+  //     email: "test@wp.pl",
+  //   },
+  // });
+});

@@ -3,59 +3,48 @@ import { Pressable, Text, View } from "react-native";
 import CustomInput from "@components/CustomInput";
 import type { TextInputProps } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
-  RegisterSchemaType,
-  registerSchema,
-} from "@/app/lib/shemas/registerSchema";
+  VerifyCodeSchemaType,
+  verifyCodeSchema,
+} from "@/app/lib/shemas/verifyCodeSchema";
 
 type CustomInputProps = {
   label: string;
   error?: { message?: string };
-
-  name: keyof RegisterSchemaType;
+  name: keyof VerifyCodeSchemaType;
 } & TextInputProps;
 
 const fields: CustomInputProps[] = [
   {
-    name: "emailAddress",
-    label: "Email",
-    placeholder: "Wpisz email",
-    autoCapitalize: "none",
+    name: "code",
+    label: "Kod weryfikacyjny",
+    placeholder: "Wprowadź kod z maila",
+    keyboardType: "number-pad",
     autoFocus: true,
-    secureTextEntry: false,
-  },
-  {
-    name: "password",
-    label: "Hasło",
-    placeholder: "Wpisz hasło",
-    autoCapitalize: "none",
-    secureTextEntry: true,
+    maxLength: 6,
   },
 ];
 
-type LoginFormProps = {
-  onSignUpPress: (data: RegisterSchemaType) => Promise<void>;
+type EmailVerifyCodeProps = {
+  onVerifyPress?: (data: VerifyCodeSchemaType) => Promise<void>;
 };
 
-export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
-  const { control, handleSubmit } = useForm<RegisterSchemaType>({
+export default function EmailVerifyCode({
+  onVerifyPress,
+}: EmailVerifyCodeProps) {
+  const { control, handleSubmit } = useForm<VerifyCodeSchemaType>({
     defaultValues: {
-      emailAddress: "",
-      password: "",
+      code: "",
     },
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(verifyCodeSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterSchemaType> = async (data) => {
-    await onSignUpPress({
-      emailAddress: data?.emailAddress,
-      password: data?.password,
-    });
+  const onSubmit: SubmitHandler<VerifyCodeSchemaType> = async (data) => {
+    await onVerifyPress?.(data);
   };
 
   return (
-    <View className="w-full">
+    <View className="flex-1 justify-center items-center gap-4 p-12">
       {fields.map(
         ({
           name,
@@ -64,8 +53,10 @@ export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
           autoCapitalize,
           autoFocus,
           secureTextEntry,
+          keyboardType,
+          maxLength,
         }) => (
-          <View key={name}>
+          <View key={name} className="mb-4 w-full">
             <Controller
               control={control}
               name={name}
@@ -83,6 +74,8 @@ export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
                   autoCapitalize={autoCapitalize}
                   autoFocus={autoFocus}
                   secureTextEntry={secureTextEntry}
+                  keyboardType={keyboardType}
+                  maxLength={maxLength}
                   error={error}
                 />
               )}
@@ -92,11 +85,11 @@ export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
       )}
 
       <Pressable
-        className="bg-blue-600 rounded-lg py-4"
+        className="bg-blue-600 rounded-lg py-4 w-full"
         onPress={handleSubmit(onSubmit)}
       >
         <Text className="text-center text-white font-semibold">
-          Zarejestruj
+          Zatwierdź kod
         </Text>
       </Pressable>
     </View>
