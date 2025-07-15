@@ -3,6 +3,7 @@ import React from "react";
 import EmailVerifyCode from "@components/EmailVerifyCode";
 import { useRouter } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";
+import { signInUser } from "../../services/api";
 export default function VerifyScreen() {
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -21,7 +22,14 @@ export default function VerifyScreen() {
       // If verification was completed, set the session to active
       // and redirect the user
       if (signUpAttempt.status === "complete") {
+        signInUser({
+          email: signUpAttempt.emailAddress,
+          clerkId: signUpAttempt.createdUserId,
+        });
         await setActive({ session: signUpAttempt.createdSessionId });
+        console.log(signUpAttempt.createdUserId, "signUpAttempt.createdUserId");
+
+        // Redirect to the dashboard or any other screen
         alert("Verification successful!");
         router.replace("/(protected)/(tabs)/dashboard");
       } else {
