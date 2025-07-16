@@ -1,6 +1,6 @@
 import { Text, View } from "react-native";
 import { Link } from "expo-router";
-import RegisterForm from "@/app/components/RegisterForm";
+import RegisterForm from "@/components/RegisterForm";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import React from "react";

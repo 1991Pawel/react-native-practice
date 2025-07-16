@@ -1,5 +1,5 @@
 import React from "react";
-import VerifyScreen from "@/app/screens/VerifyScreen";
+import VerifyScreen from "@/screens/VerifyScreen";
 
 export default function Page() {
   return <VerifyScreen />;

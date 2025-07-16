@@ -2,7 +2,7 @@ import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
 import { useState } from "react";
 import { Image } from "react-native";
-import { images } from "@/app/constans/images";
+import { images } from "@/constans/images";
 import {
   CodeField,
   Cursor,
@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   VerifyCodeSchemaType,
   verifyCodeSchema,
-} from "@/app/lib/shemas/verifyCodeSchema";
+} from "@/lib/shemas/verifyCodeSchema";
 
 type EmailVerifyCodeProps = {
   onVerifyPress?: (data: VerifyCodeSchemaType) => Promise<void>;

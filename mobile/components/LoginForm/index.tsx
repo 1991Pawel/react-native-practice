@@ -1,19 +1,15 @@
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
-import CustomInput from "@components/CustomInput";
+import CustomInput from "@/components/CustomInput";
 import type { TextInputProps } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-
-import {
-  RegisterSchemaType,
-  registerSchema,
-} from "@/app/lib/shemas/registerSchema";
+import { LoginSchemaType, loginSchema } from "@/lib/shemas/loginSchema";
 
 type CustomInputProps = {
   label: string;
   error?: { message?: string };
 
-  name: keyof RegisterSchemaType;
+  name: keyof LoginSchemaType;
 } & TextInputProps;
 
 const fields: CustomInputProps[] = [
@@ -35,20 +31,20 @@ const fields: CustomInputProps[] = [
 ];
 
 type LoginFormProps = {
-  onSignUpPress: (data: RegisterSchemaType) => Promise<void>;
+  onSignInPress: (data: LoginSchemaType) => Promise<void>;
 };
 
-export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
-  const { control, handleSubmit } = useForm<RegisterSchemaType>({
+export default function LoginForm({ onSignInPress }: LoginFormProps) {
+  const { control, handleSubmit } = useForm<LoginSchemaType>({
     defaultValues: {
       emailAddress: "",
       password: "",
     },
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit: SubmitHandler<RegisterSchemaType> = async (data) => {
-    await onSignUpPress({
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
+    await onSignInPress({
       emailAddress: data?.emailAddress,
       password: data?.password,
     });
@@ -95,9 +91,7 @@ export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
         className="bg-blue-600 rounded-lg py-4"
         onPress={handleSubmit(onSubmit)}
       >
-        <Text className="text-center text-white font-semibold">
-          Zarejestruj
-        </Text>
+        <Text className="text-center text-white font-semibold">Zaloguj</Text>
       </Pressable>
     </View>
   );

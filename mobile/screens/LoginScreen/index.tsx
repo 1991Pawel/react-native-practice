@@ -1,10 +1,10 @@
-import LoginForm from "@/app/components/LoginForm";
+import LoginForm from "@/components/LoginForm";
 
 import { useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import * as React from "react";
 import { View, Text } from "react-native";
-import { LoginSchemaType } from "@/app/lib/shemas/loginSchema";
+import { LoginSchemaType } from "@/lib/shemas/loginSchema";
 import Link from "expo-router/link";
 
 export default function Page() {

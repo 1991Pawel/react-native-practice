@@ -1,15 +1,19 @@
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
 import { Pressable, Text, View } from "react-native";
-import CustomInput from "@components/CustomInput";
+import CustomInput from "@/components/CustomInput";
 import type { TextInputProps } from "react-native";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginSchemaType, loginSchema } from "@/app/lib/shemas/loginSchema";
+
+import {
+  RegisterSchemaType,
+  registerSchema,
+} from "@/lib/shemas/registerSchema";
 
 type CustomInputProps = {
   label: string;
   error?: { message?: string };
 
-  name: keyof LoginSchemaType;
+  name: keyof RegisterSchemaType;
 } & TextInputProps;
 
 const fields: CustomInputProps[] = [
@@ -31,20 +35,20 @@ const fields: CustomInputProps[] = [
 ];
 
 type LoginFormProps = {
-  onSignInPress: (data: LoginSchemaType) => Promise<void>;
+  onSignUpPress: (data: RegisterSchemaType) => Promise<void>;
 };
 
-export default function LoginForm({ onSignInPress }: LoginFormProps) {
-  const { control, handleSubmit } = useForm<LoginSchemaType>({
+export default function RegisterForm({ onSignUpPress }: LoginFormProps) {
+  const { control, handleSubmit } = useForm<RegisterSchemaType>({
     defaultValues: {
       emailAddress: "",
       password: "",
     },
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(registerSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = async (data) => {
-    await onSignInPress({
+  const onSubmit: SubmitHandler<RegisterSchemaType> = async (data) => {
+    await onSignUpPress({
       emailAddress: data?.emailAddress,
       password: data?.password,
     });
@@ -91,7 +95,9 @@ export default function LoginForm({ onSignInPress }: LoginFormProps) {
         className="bg-blue-600 rounded-lg py-4"
         onPress={handleSubmit(onSubmit)}
       >
-        <Text className="text-center text-white font-semibold">Zaloguj</Text>
+        <Text className="text-center text-white font-semibold">
+          Zarejestruj
+        </Text>
       </Pressable>
     </View>
   );

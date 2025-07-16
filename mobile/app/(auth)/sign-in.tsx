@@ -1,6 +1,6 @@
 import React from "react";
-import LoginScreen from "@/app/screens/LoginScreen";
-import VerifyScreen from "@/app/screens/VerifyScreen";
+import LoginScreen from "@/screens/LoginScreen";
+import VerifyScreen from "@/screens/VerifyScreen";
 
 export default function Page() {
   return <VerifyScreen />;
