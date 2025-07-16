@@ -5,7 +5,9 @@
     "paths": {
       "@/*": ["./*"],
       "@components/*": ["./app/components/*"],
-      "@screens/*": ["./app/screens/*"]
+      "@screens/*": ["./app/screens/*"],
+      "@assets/*": ["./app/assets/*"],
+      "@constans/*": ["./app/constans/*"]
     }
   },
   "include": [

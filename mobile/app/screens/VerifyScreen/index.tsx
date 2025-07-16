@@ -7,10 +7,8 @@ import { signInUser } from "../../services/api";
 export default function VerifyScreen() {
   const router = useRouter();
   const { isLoaded, signUp, setActive } = useSignUp();
-  //   const { isLoaded, signUp, setActive } = useSignUp();
-  //   const router = useRouter();
 
-  const onVerifyPress = async ({ code }) => {
+  const onVerifyPress = async ({ code }: { code: string }) => {
     if (!isLoaded) return;
 
     try {
@@ -27,10 +25,9 @@ export default function VerifyScreen() {
           clerkId: signUpAttempt.createdUserId,
         });
         await setActive({ session: signUpAttempt.createdSessionId });
-        console.log(signUpAttempt.createdUserId, "signUpAttempt.createdUserId");
 
         // Redirect to the dashboard or any other screen
-        alert("Verification successful!");
+
         router.replace("/(protected)/(tabs)/dashboard");
       } else {
         // If the status is not complete, check why. User may need to
