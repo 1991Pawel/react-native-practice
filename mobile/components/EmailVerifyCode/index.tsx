@@ -23,21 +23,25 @@ const CELL_COUNT = 6;
 export default function EmailVerifyCode({
   onVerifyPress,
 }: EmailVerifyCodeProps) {
-  const { control, handleSubmit } = useForm<VerifyCodeSchemaType>({
-    defaultValues: {
-      code: "",
-    },
+  const {
+    control,
+    handleSubmit,
+    setValue: setFormValue,
+    watch,
+  } = useForm<VerifyCodeSchemaType>({
+    defaultValues: { code: "" },
     resolver: zodResolver(verifyCodeSchema),
   });
 
   const onSubmit: SubmitHandler<VerifyCodeSchemaType> = async (data) => {
     await onVerifyPress?.(data);
   };
-  const [value, setValue] = useState("");
+
+  const value = watch("code");
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
-    setValue,
+    setValue: (val) => setFormValue("code", val),
   });
 
   return (
