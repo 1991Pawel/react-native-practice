@@ -47,8 +47,8 @@ export default function Page() {
   return (
     <View className="flex-1 justify-center items-center gap-4 p-12">
       <LoginForm onSignInPress={onSignInPress} />
-      <View className="flex-row items-center justify-center gap-1">
-        <Text className="text-center text-gray-500">Nie masz konta? </Text>
+      <View className="flex-row items-center  justify-center gap-1">
+        <Text className="text-center text-gray-500 ">Nie masz konta? </Text>
         <Link href="/(auth)/sign-up" className="text-blue-600">
           Zarejestruj się
         </Link>

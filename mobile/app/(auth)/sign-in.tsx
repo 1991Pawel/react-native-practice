@@ -3,5 +3,5 @@ import LoginScreen from "@/screens/LoginScreen";
 import VerifyScreen from "@/screens/VerifyScreen";
 
 export default function Page() {
-  return <VerifyScreen />;
+  return <LoginScreen />;
 }

@@ -4,6 +4,7 @@ module.exports = {
   content: [
     "./app/**/*",
     "./components/**/*.{js,jsx,ts,tsx}",
+    "./screens/**/*.{js,jsx,ts,tsx}",
     "./node_modules/expo-image/**/*.js",
   ],
   presets: [require("nativewind/preset")],

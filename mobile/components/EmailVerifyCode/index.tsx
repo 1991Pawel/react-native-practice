@@ -1,7 +1,14 @@
 import { Controller, useForm, SubmitHandler } from "react-hook-form";
-import { Pressable, Text, View } from "react-native";
-import { useState } from "react";
-import { Image } from "react-native";
+import { Pressable, Text, View, Image } from "react-native";
+import {
+  KeyboardAvoidingView,
+  TextInput,
+  StyleSheet,
+  Platform,
+  TouchableWithoutFeedback,
+  Button,
+  Keyboard,
+} from "react-native";
 import { images } from "@/constans/images";
 import {
   CodeField,
@@ -45,10 +52,15 @@ export default function EmailVerifyCode({
   });
 
   return (
-    <View className="flex-1 justify-center items-center gap-4 p-12">
-      <View className="items-center px-4 py-8">
-        <Text className="text-lg font-semibold mb-4">zdjecie</Text>
+    <View className="flex-1  items-center gap-4 p-12 justify-between">
+      <View className="items-center px-4 py-8 mt-[100px]">
         <Image source={images.verify.otp} className="w-64 h-64 mb-4 " />
+        <Text className="text-center text-lg font-semibold mb-2">
+          Weryfikacja OTP
+        </Text>
+        <Text className="text-center text-gray-600 mb-4">
+          Wprowadź kod weryfikacyjny, który został wysłany na Twój adres e-mail.
+        </Text>
         <Controller
           control={control}
           name={"code"}
@@ -64,15 +76,15 @@ export default function EmailVerifyCode({
                 rootStyle={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  width: 300,
+                  width: 340,
                 }}
                 keyboardType="number-pad"
                 textContentType="oneTimeCode"
                 renderCell={({ index, symbol, isFocused }) => (
                   <Text
                     key={index}
-                    className={`w-12 h-14 text-xl text-center border-2  rounded-xl ${
-                      isFocused ? "border-black" : "border-gray-300"
+                    className={`w-12 h-14 text-xl text-center border-b-2  ${
+                      symbol || isFocused ? "border-black" : "border-gray-300"
                     }`}
                     onLayout={getCellOnLayoutHandler(index)}
                   >
@@ -86,6 +98,12 @@ export default function EmailVerifyCode({
             </>
           )}
         />
+        <View className="flex-row justify-center items-center mt-5">
+          <Text className="text-gray-400 text-sm">Nie otrzymałeś kodu? </Text>
+          <Pressable onPress={() => console.log("Kod wysłany ponownie")}>
+            <Text className="text-blue-500">Wyślij ponownie</Text>
+          </Pressable>
+        </View>
       </View>
 
       <Pressable
