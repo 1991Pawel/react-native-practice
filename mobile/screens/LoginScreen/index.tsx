@@ -1,11 +1,17 @@
 import LoginForm from "@/components/LoginForm";
 
 import { useSignIn } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
+import { useRouter, Link } from "expo-router";
 import * as React from "react";
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
 import { LoginSchemaType } from "@/lib/shemas/loginSchema";
-import Link from "expo-router/link";
 
 export default function Page() {
   const { signIn, setActive, isLoaded } = useSignIn();
@@ -45,16 +51,21 @@ export default function Page() {
     return null;
   }
   return (
-    <>
-      <View className="flex-1 justify-center items-center gap-4 p-12">
-        <LoginForm onSignInPress={onSignInPress} />
-        <View className="flex-row items-center  justify-center gap-1">
-          <Text className="text-center text-gray-500 ">Nie masz konta? </Text>
-          <Link href="/(auth)/sign-up" className="text-blue-600">
-            Zarejestruj się
-          </Link>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View className="flex-1 justify-center items-center gap-4 p-12 w-full">
+          <LoginForm onSignInPress={onSignInPress} />
+          <View className="flex-row items-center  justify-center gap-1">
+            <Text className="text-center text-gray-500 ">Nie masz konta? </Text>
+            <Link href="/(auth)/sign-up" className="text-blue-600">
+              Zarejestruj się
+            </Link>
+          </View>
         </View>
-      </View>
-    </>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }

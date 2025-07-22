@@ -1,5 +1,4 @@
 import React from "react";
-
 import EmailVerifyCode from "@/components/EmailVerifyCode";
 import { useRouter } from "expo-router";
 import { useSignUp } from "@clerk/clerk-expo";

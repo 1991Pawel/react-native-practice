@@ -22,7 +22,7 @@ const fields: CustomInputProps[] = [
     label: "Email",
     placeholder: "Wpisz email",
     autoCapitalize: "none",
-    autoFocus: true,
+    // autoFocus: true,
     secureTextEntry: false,
   },
   {

@@ -54,57 +54,48 @@ export default function LoginForm({ onSignInPress }: LoginFormProps) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1, justifyContent: "center", width: "100%" }}
-      >
-        <View className="w-full">
-          {fields.map(
-            ({
-              name,
-              label,
-              placeholder,
-              autoCapitalize,
-              autoFocus,
-              secureTextEntry,
-            }) => (
-              <View key={name}>
-                <Controller
-                  control={control}
-                  name={name}
-                  defaultValue=""
-                  render={({
-                    field: { onChange, value, onBlur },
-                    fieldState: { error },
-                  }) => (
-                    <CustomInput
-                      label={label}
-                      value={value}
-                      onChangeText={onChange}
-                      onBlur={onBlur}
-                      placeholder={placeholder}
-                      autoCapitalize={autoCapitalize}
-                      autoFocus={autoFocus}
-                      secureTextEntry={secureTextEntry}
-                      error={error}
-                    />
-                  )}
+    <View className="w-full">
+      {fields.map(
+        ({
+          name,
+          label,
+          placeholder,
+          autoCapitalize,
+          autoFocus,
+          secureTextEntry,
+        }) => (
+          <View key={name}>
+            <Controller
+              control={control}
+              name={name}
+              defaultValue=""
+              render={({
+                field: { onChange, value, onBlur },
+                fieldState: { error },
+              }) => (
+                <CustomInput
+                  label={label}
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  placeholder={placeholder}
+                  autoCapitalize={autoCapitalize}
+                  autoFocus={autoFocus}
+                  secureTextEntry={secureTextEntry}
+                  error={error}
                 />
-              </View>
-            )
-          )}
+              )}
+            />
+          </View>
+        )
+      )}
 
-          <Pressable
-            className="bg-blue-600 rounded-lg py-4"
-            onPress={handleSubmit(onSubmit)}
-          >
-            <Text className="text-center text-white font-semibold">
-              Zaloguj
-            </Text>
-          </Pressable>
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+      <Pressable
+        className="bg-blue-600 rounded-lg py-4"
+        onPress={handleSubmit(onSubmit)}
+      >
+        <Text className="text-center text-white font-semibold">Zaloguj</Text>
+      </Pressable>
+    </View>
   );
 }

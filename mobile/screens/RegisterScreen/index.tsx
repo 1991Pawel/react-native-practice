@@ -1,16 +1,27 @@
 import { Text, View } from "react-native";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import RegisterForm from "@/components/RegisterForm";
 import { useSignUp } from "@clerk/clerk-expo";
-import { useRouter } from "expo-router";
+import {
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+
 import React from "react";
-import { email } from "zod";
 
 export default function RegisterScreen() {
-  const { isLoaded, signUp, setActive } = useSignUp();
+  const { isLoaded, signUp } = useSignUp();
   const router = useRouter();
 
-  const onSignUpPress = async ({ emailAddress, password }) => {
+  const onSignUpPress = async ({
+    emailAddress,
+    password,
+  }: {
+    emailAddress: string;
+    password: string;
+  }) => {
     if (!isLoaded) return;
 
     // Start sign-up process using email and password provided
@@ -26,10 +37,7 @@ export default function RegisterScreen() {
       });
 
       router.push("/(auth)/verify");
-      // Set 'pendingVerification' to true to display second form
-      // and capture OTP code
-      // setPendingVerification(true);
-      // router.push("/(auth)/verify");
+
       console.log("Sign-up initiated, awaiting verification code.", signUp);
     } catch (err) {
       alert(err);
@@ -40,14 +48,21 @@ export default function RegisterScreen() {
   };
 
   return (
-    <View className="flex-1 justify-center items-center gap-4 p-12">
-      <RegisterForm onSignUpPress={onSignUpPress} />
-      <View className="flex-row items-center justify-center gap-1">
-        <Text className="text-center text-gray-500">Masz już konto? </Text>
-        <Link href="/(auth)/sign-in" className="text-blue-600">
-          Zaloguj się
-        </Link>
-      </View>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
+        <View className="flex-1 justify-center items-center gap-4 p-12">
+          <RegisterForm onSignUpPress={onSignUpPress} />
+          <View className="flex-row items-center justify-center gap-1">
+            <Text className="text-center text-gray-500">Masz już konto? </Text>
+            <Link href="/(auth)/sign-in" className="text-blue-600">
+              Zaloguj się
+            </Link>
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
