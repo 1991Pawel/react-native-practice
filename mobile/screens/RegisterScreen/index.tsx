@@ -4,6 +4,7 @@ import RegisterForm from "@/components/RegisterForm";
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import React from "react";
+import { email } from "zod";
 
 export default function RegisterScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -14,13 +15,16 @@ export default function RegisterScreen() {
 
     // Start sign-up process using email and password provided
     try {
-      await signUp.create({
+      const createdSignUp = await signUp.create({
         emailAddress,
         password,
       });
 
       // Send user an email with verification code
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await createdSignUp.prepareEmailAddressVerification({
+        strategy: "email_code",
+      });
+
       router.push("/(auth)/verify");
       // Set 'pendingVerification' to true to display second form
       // and capture OTP code
