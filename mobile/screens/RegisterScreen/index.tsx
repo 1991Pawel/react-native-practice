@@ -25,6 +25,7 @@ export default function RegisterScreen() {
     if (!isLoaded) return;
 
     // Start sign-up process using email and password provided
+    // todo check if user already exists
     try {
       const createdSignUp = await signUp.create({
         emailAddress,
