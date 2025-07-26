@@ -34,3 +34,48 @@ app.post("/register", async (req, res) => {
     res.status(500).json({ error: "Błąd podczas tworzenia użytkownika" });
   }
 });
+
+app.put("/user/update", async (req, res) => {
+  console.log("Received request to update user");
+  console.log("Request body:", req.body);
+
+  const { clerkId, name } = req.body;
+
+  if (!clerkId) {
+    return res.status(400).json({ error: "clerkId jest wymagane" });
+  }
+
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { clerkId },
+      data: {
+        firstName: name,
+        profileCompleted: true,
+      },
+    });
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Błąd podczas edytowania użytkownika" });
+  }
+});
+
+app.get("/user/:clerkId", async (req, res) => {
+  const { clerkId } = req.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { clerkId },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Użytkownik nie znaleziony" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    console.error("Błąd podczas pobierania użytkownika:", error);
+    res.status(500).json({ error: "Błąd serwera" });
+  }
+});

@@ -20,4 +20,5 @@ model User {
   email     String  @unique
   createdAt DateTime @default(now())
   profileCompleted Boolean  @default(false)
+  firstName String?
 }

@@ -20,7 +20,7 @@ const SignOutButton = () => {
 
   return (
     <TouchableOpacity onPress={handleSignOut}>
-      <Text>Sign out</Text>
+      <Text>Wyloguj</Text>
     </TouchableOpacity>
   );
 };

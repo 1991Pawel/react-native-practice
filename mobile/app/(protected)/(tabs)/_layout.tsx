@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const TAB_LABELS = {
   dashboard: "Dashboard",
   settings: "Settings",
+  profile: "Profile",
 } as const;
 
 const _Layout = () => {
@@ -43,6 +44,16 @@ const _Layout = () => {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="home-outline" size={24} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Profile",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person-outline" size={24} color={color} />
           ),
         }}
       />
