@@ -1,10 +1,10 @@
-import { Text, View } from "react-native";
+import { Text, View, SafeAreaView, Image } from "react-native";
 import SignOutButton from "@/components/SignOutButton";
 import { useUser } from "@clerk/clerk-expo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { getUserByClerkId } from "@/services/api";
 import { useIsFocused } from "@react-navigation/native";
-import { useEffect } from "react";
+import { images } from "@/constans/images";
 
 export default function Page() {
   const { user } = useUser();
@@ -26,16 +26,24 @@ export default function Page() {
   }, [isFocused, user?.id]);
 
   return (
-    <View className="flex-1 items-center justify-center bg-white">
+    <SafeAreaView>
+      <View className="flex-row items-center gap-4 p-4">
+        <Image
+          source={images.dashboard.avatar}
+          className="w-16 h-16 rounded-full"
+        />
+
+        <Text className="text-xl font-semibold">Witaj, {firstName}!</Text>
+      </View>
+
       <View>
         <Text className="m-auto text-2xl text-center bg-slate-100 py-20">
-          Dashboard Hello {firstName || "Loading..."}
           Email: {user?.emailAddresses[0]?.emailAddress}
         </Text>
         <View className="mt-4  flex-row justify-center">
           <SignOutButton />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
