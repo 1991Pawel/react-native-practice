@@ -1,13 +1,15 @@
 import { Text, View } from "react-native";
 import SignOutButton from "@/components/SignOutButton";
 import { useUser } from "@clerk/clerk-expo";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getUserByClerkId } from "@/services/api";
+import { useIsFocused } from "@react-navigation/native";
+import { useEffect } from "react";
 
 export default function Page() {
   const { user } = useUser();
   const [firstName, setFirstName] = useState<string>("");
-
+  const isFocused = useIsFocused();
   useEffect(() => {
     async function fetchUserName() {
       if (!user?.id) return;
@@ -21,7 +23,7 @@ export default function Page() {
     }
 
     fetchUserName();
-  }, [user?.id]);
+  }, [isFocused, user?.id]);
 
   return (
     <View className="flex-1 items-center justify-center bg-white">
